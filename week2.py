@@ -16,7 +16,7 @@ for file in folder:
       f[keys[keycount]]=value
       keycount=keycount+1
     print(f)
-    response=requests.post("http://35.239.240.253/feedback/",json=f)
+    response=requests.post("http://<External IP Address>/feedback/",json=f)
 print(response.request.body)
 print(response.status_code)
 
