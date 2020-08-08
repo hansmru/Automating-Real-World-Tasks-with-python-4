@@ -51,10 +51,11 @@ def process_data(data):
   for item in data:
     year=(get_year(item["car"]))
     most_popular_year[year]= most_popular_year.get(year,0) + item["total_sales"]
+
   summary = [
-    "The {} generated the most revenue: ${}".format(format_car(max_revenue["car$
-    "The {} car model had the most sales: {}".format(format_car(max_sales["car"$
-    "The most popular year was ({}) with {} sales.".format (max(most_popular_ye$
+    "The {} generated the most revenue: ${}".format(format_car(max_revenue["car"]), max_revenue["revenue"]),
+    "The {} car model had the most sales: {}".format(format_car(max_sales["car"]), max_sales["total_sales"]),
+    "The most popular year was ({}) with {} sales.".format (max(most_popular_year,key=most_popular_year.get), most_popular_year[(max(most_popular_year,key=most_popular_year.get))])
     ]
   return summary
 
@@ -62,7 +63,7 @@ def cars_dict_to_table(car_data):
   """Turns the data in car_data into a list of lists."""
   table_data = [["ID", "Car", "Price", "Total Sales"]]
   for item in car_data:
-    table_data.append([item["id"], format_car(item["car"]), item["price"], item$
+    table_data.append([item["id"], format_car(item["car"]), item["price"], item["total_sales"]])
   return table_data
 
 
@@ -70,19 +71,17 @@ def main(argv):
   """Process the JSON data and generate a full report out of it."""
   data = load_data("car_sales.json")
   summary = process_data(data)
-  full_summary_file= summary[0] + "<br/>" +  summary[1] + "<br/>" + summary[2] $
+  full_summary_file= summary[0] + "<br/>" +  summary[1] + "<br/>" + summary[2] + "<br/>"
   full_summary_body = summary[0] + "\n" +  summary[1] + "\n" + summary[2] + "\n"
   # TODO: turn this into a PDF report
-  reports.generate( "/tmp/cars.pdf","Sales summary for last Month",full_summary$
+  reports.generate( "/tmp/cars.pdf","Sales summary for last Month",full_summary_file,cars_dict_to_table(data))
   # TODO: send the PDF report as an email attachment
-  message=emails.generate("automation@example.com","student-00-28a938f27d45@exa$
+  message=emails.generate("automation@example.com","<my_user_id>@example.com","Sales summary for last month",full_summary_body,"/tmp/cars.pdf")
   emails.send=emails.send(message)
-
+  
 
 if __name__ == "__main__":
-  main(sys.argv)
-
-
+    main(sys.argv)
 
 
 
