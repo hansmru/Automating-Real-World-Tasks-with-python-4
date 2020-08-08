@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-import os, sys
+import os
+import sys
 from PIL import Image
 
 user = os.getenv('USER') # To get the username from environment variable
